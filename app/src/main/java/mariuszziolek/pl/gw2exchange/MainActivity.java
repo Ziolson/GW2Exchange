@@ -1,31 +1,25 @@
 package mariuszziolek.pl.gw2exchange;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import mariuszziolek.pl.gw2exchange.objects.Gem;
 import mariuszziolek.pl.gw2exchange.rest.GW2API;
-import mariuszziolek.pl.gw2exchange.rest.Service;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import mariuszziolek.pl.gw2exchange.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = this.getSharedPreferences("GW2ExchangePreferences", Context.MODE_PRIVATE);
         gw2API = GW2API.getInstance();
+
+        coinsTextView.setText(sharedPreferences.getString("coins_to_gem_price", ""));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -64,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         new RefreshContent().execute();
-
     }
 
     @Override
@@ -83,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i = new Intent(this, SettingsActivity.class);
+            startActivity(i);
             return true;
         }
 
@@ -95,6 +92,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class RefreshContent extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (!swipeRefreshLayout.isRefreshing())
+                swipeRefreshLayout.setRefreshing(true);
+        }
 
         @Override
         protected String doInBackground(Void... params) {
