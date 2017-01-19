@@ -3,6 +3,17 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
 
+    <string-array name="common_values">
+        <item>350</item>
+        <item>400</item>
+        <item>700</item>
+        <item>800</item>
+        <item>1200</item>
+        <item>1280</item>
+        <item>1600</item>
+        <item>2000</item>
+    </string-array>
+
     <!-- Settings -->
 
     <string name="pref_title_gem_price_notifications">Notify me about the gem price</string>

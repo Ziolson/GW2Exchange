@@ -29,6 +29,6 @@ public final class Gem {
         int gold = coinsPerGem / 100;
         int silver = coinsPerGem % 100;
 
-        return gold + "," + silver;
+        return gold + "." + silver;
     }
 }

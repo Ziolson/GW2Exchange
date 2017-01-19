@@ -2,6 +2,7 @@ package mariuszziolek.pl.gw2exchange.rest;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -67,6 +68,8 @@ public final class GW2API {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("coins_to_gem_price", gem.getPrice());
                 editor.apply();
+
+                Log.i("getCoinsToGemPriceSync:", gem.getPrice());
 
                 return gem.getPrice();
             }

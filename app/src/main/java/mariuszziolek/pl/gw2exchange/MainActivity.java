@@ -14,10 +14,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import mariuszziolek.pl.gw2exchange.adapter.CommonPriceListAdapter;
 import mariuszziolek.pl.gw2exchange.rest.GW2API;
 import mariuszziolek.pl.gw2exchange.settings.SettingsActivity;
 
@@ -25,9 +27,11 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.textViewCoins) TextView coinsTextView;
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.listViewCommonPrice) ListView listView;
 
     private SharedPreferences sharedPreferences;
     private GW2API gw2API;
+    private CommonPriceListAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         gw2API = GW2API.getInstance();
 
         coinsTextView.setText(sharedPreferences.getString("coins_to_gem_price", ""));
+        String[] commonValues = getResources().getStringArray(R.array.common_values);
+        listAdapter = new CommonPriceListAdapter(this, commonValues);
+        listView.setAdapter(listAdapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         coinsTextView.setText(coinsToGemPrice);
     }
 
+    //// TODO: 19.01.17 Change to Double from String
     private class RefreshContent extends AsyncTask<Void, Void, String> {
 
         @Override
@@ -110,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             coinsTextView.setText(s);
+            listAdapter.notifyDataSetChanged();
             swipeRefreshLayout.setRefreshing(false);
         }
     }

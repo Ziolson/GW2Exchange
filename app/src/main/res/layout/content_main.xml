@@ -14,15 +14,18 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:cardElevation="2dp">
+        android:layout_height="wrap_content"
+        app:cardElevation="2dp"
+        android:id="@+id/currentPriceCard"
+        android:layout_marginBottom="10dp"
+        app:contentPadding="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textViewCurrentPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -33,7 +36,7 @@
                 android:id="@+id/textViewDash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textView"
+                android:layout_below="@id/textViewCurrentPrice"
                 android:layout_centerHorizontal="true"
                 android:text="  -  "/>
 
@@ -41,7 +44,7 @@
                 android:id="@+id/imageViewGem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textView"
+                android:layout_below="@id/textViewCurrentPrice"
                 android:layout_toStartOf="@id/textViewDash"
                 app:srcCompat="@drawable/gem" />
 
@@ -49,7 +52,7 @@
                 android:id="@+id/textView100Gems"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textView"
+                android:layout_below="@id/textViewCurrentPrice"
                 android:layout_centerHorizontal="true"
                 android:layout_toStartOf="@id/imageViewGem"
                 android:text="100" />
@@ -58,19 +61,50 @@
                 android:id="@+id/textViewCoins"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textView"
+                android:layout_below="@id/textViewCurrentPrice"
                 android:layout_toEndOf="@id/textViewDash"
-                android:text="TextView" />
+                android:text="25" />
 
             <ImageView
                 android:id="@+id/imageViewGoldCoin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textView"
+                android:layout_below="@id/textViewCurrentPrice"
                 android:layout_toEndOf="@id/textViewCoins"
                 app:srcCompat="@drawable/gold_coin" />
 
         </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/currentPriceCard"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        app:contentPadding="10dp"
+        app:cardElevation="2dp"
+        android:layout_height="200dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="Most common:"
+                android:id="@+id/textViewMostCommon" />
+
+            <ListView
+                android:id="@+id/listViewCommonPrice"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/textViewMostCommon"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>
+
     </android.support.v7.widget.CardView>
 
 </RelativeLayout>
