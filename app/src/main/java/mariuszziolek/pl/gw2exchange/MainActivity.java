@@ -5,16 +5,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -27,11 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.textViewCoins) TextView coinsTextView;
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.listViewCommonPrice) ListView listView;
+    @BindView(R.id.recyclerViewCommonPrice) RecyclerView recyclerView;
 
     private SharedPreferences sharedPreferences;
     private GW2API gw2API;
     private CommonPriceListAdapter listAdapter;
+    private String[] commonValues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +44,15 @@ public class MainActivity extends AppCompatActivity {
         gw2API = GW2API.getInstance();
 
         coinsTextView.setText(sharedPreferences.getString("coins_to_gem_price", ""));
-        String[] commonValues = getResources().getStringArray(R.array.common_values);
+        commonValues = getResources().getStringArray(R.array.common_values);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
         listAdapter = new CommonPriceListAdapter(this, commonValues);
-        listView.setAdapter(listAdapter);
+        recyclerView.setAdapter(listAdapter);
+
+        View coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        coordinatorLayout.setBackgroundResource(R.color.background);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent i = new Intent(getApplicationContext(), CalculatorActivity.class);
+                startActivity(i);
             }
         });
 
@@ -93,11 +100,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void refreshContent() {
-        String coinsToGemPrice = gw2API.getCoinsToGemPriceSync(this);
-        coinsTextView.setText(coinsToGemPrice);
-    }
-
     //// TODO: 19.01.17 Change to Double from String
     private class RefreshContent extends AsyncTask<Void, Void, String> {
 
@@ -114,11 +116,16 @@ public class MainActivity extends AppCompatActivity {
             return coinsToGemPrice;
         }
 
+        //// TODO: 27.01.17 Find how to refresh data in RecyclerView
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             coinsTextView.setText(s);
-            listAdapter.notifyDataSetChanged();
+            listAdapter = new CommonPriceListAdapter(getApplicationContext(), commonValues);
+            //recyclerView.setAdapter(listAdapter);
+            recyclerView.invalidate();
+            //recyclerView.getAdapter().notifyDataSetChanged();
+            //listAdapter.notifyItemRangeChanged(0, commonValues.length - 1);
             swipeRefreshLayout.setRefreshing(false);
         }
     }

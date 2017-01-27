@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:gravity="center">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textViewDashInList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="  -  " />
+
+    <ImageView
+        android:id="@+id/imageViewGemInList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/textViewDashInList"
+        app:srcCompat="@drawable/gem" />
 
     <TextView
         android:id="@+id/textViewGemsInList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="100" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/gem" />
+        android:layout_toStartOf="@id/imageViewGemInList"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="  -  " />
-
-    <TextView
+        android:layout_toEndOf="@id/textViewDashInList"
         android:id="@+id/textViewCoinsInList"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="25" />
+        android:layout_height="wrap_content" />
 
     <ImageView
+        android:layout_toEndOf="@id/textViewCoinsInList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/gold_coin" />
 
-</LinearLayout>
+</RelativeLayout>
