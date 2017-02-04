@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
     private GW2API gw2API;
-    private CommonPriceListAdapter listAdapter;
     private String[] commonValues;
 
     @Override
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        listAdapter = new CommonPriceListAdapter(this, commonValues);
+        CommonPriceListAdapter listAdapter = new CommonPriceListAdapter(getBaseContext(), commonValues);
         recyclerView.setAdapter(listAdapter);
 
         View coordinatorLayout = findViewById(R.id.coordinatorLayout);
@@ -115,17 +114,16 @@ public class MainActivity extends AppCompatActivity {
             String coinsToGemPrice = gw2API.getCoinsToGemPriceSync(getApplicationContext());
             return coinsToGemPrice;
         }
-
-        //// TODO: 27.01.17 Find how to refresh data in RecyclerView
+        
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+
             coinsTextView.setText(s);
-            listAdapter = new CommonPriceListAdapter(getApplicationContext(), commonValues);
-            //recyclerView.setAdapter(listAdapter);
-            recyclerView.invalidate();
-            //recyclerView.getAdapter().notifyDataSetChanged();
-            //listAdapter.notifyItemRangeChanged(0, commonValues.length - 1);
+
+            CommonPriceListAdapter listAdapter = new CommonPriceListAdapter(MainActivity.this, commonValues);
+            recyclerView.setAdapter(listAdapter);
+
             swipeRefreshLayout.setRefreshing(false);
         }
     }

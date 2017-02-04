@@ -43,6 +43,8 @@ public class CommonPriceListAdapter extends RecyclerView.Adapter<CommonPriceList
         holder.textViewCoins.setText(String.format("%.2f", price));
     }
 
+
+
     @Override
     public int getItemCount() {
         return values.length;
